@@ -13,10 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = $data["data"] ?? 'err';
     $inputRaw = $data["dataRaw"] ?? 'dataRaw';
     
-    //if($inputRaw !== 'dataRaw'){
-        $result = ['success' => brackets($input), 'data' => dataSaver($inputRaw, brackets($input) == 1 ? 'true' : 'false')];
-    //}
+    if($input !== ''){
+        $result = ['success' => brackets($input), 'data' => dataSaver($inputRaw, brackets($input))];
+    }
+    else{
+        $result = ["err" => "Введеныне данны пусты"];
+    }
     
     
     echo json_encode($result);
 }
+

@@ -9,19 +9,21 @@
 <body>
     <div id="app" class="container">
         <h1>Ввод</h1>
-        <input v-model="inputString" class="form-control">
-        <button @click="checkBrackets" class="btn btn-primary mt-2">проверить</button>
+        <form @submit.prevent="checkBrackets" keyup.enter="submit">
+            <input  v-model="inputString" class="form-control">
+            <button type="submit" class="btn btn-primary mt-2">проверить</button>
+            <p v-if="inputErr">{{inputErr}}<!-- Ошибка, введите данные :P --></p>
+        </form>
         <h2>Запросы</h2>
         <div class="history overflow-auto mt-3">
             <ul class="list-group" style="max-height: 200px;">
                 <li class="list-group-item" v-for="item in history">
-                    {{ item.query }}: <strong>{{ item.result }}</strong> <!-- <span>{{item.dataRaw}}</span> --> 
+                    {{ item.query }}: <strong>{{ item.result ? 'true' : 'false' }}</strong> <!-- <span>{{item.dataRaw}}</span> --> 
                 </li>
             </ul>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.8/dist/vue.js"></script>
     <script src="js/app.js"></script>
-
 </body>
 </html>

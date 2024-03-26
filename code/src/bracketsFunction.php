@@ -3,7 +3,7 @@
 require_once('connect.php');
 
 function brackets($str) {
-    if ($str == '') {
+    if ($str == '' || ctype_alpha($str)) {
         return false; 
     }
 
@@ -15,9 +15,10 @@ function brackets($str) {
         '<' => '>'
     ];
 
+
     for ($i = 0; $i < strlen($str); $i++) {
         $currentChar = $str[$i];
-
+        
 
         if (array_key_exists($currentChar, $dictionary)) {
             array_push($stack, $currentChar); 
@@ -31,23 +32,21 @@ function brackets($str) {
                 return false; 
             }
         }
+        
     }
-
 
     return empty($stack);
 }
 
 function dataSaver($data, $result) {
-    $conn = getConnect();
+    try {
+        $conn = getConnect();
 
-    if($conn){
         $qe = $conn->prepare("INSERT INTO history (query, result) VALUES (:query, :result)");
-        $qe->execute(['query' => $data, 'result' => $result]);
+        $qe->execute(['query' => $data, 'result' => $result ? 1 : 0]);
         
-        
-        return true;
+    } catch (\Throwable $th) {
+        error_log('err');
     }
-    else
-        return false;
     
 }
